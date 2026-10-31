@@ -1228,4 +1228,19 @@ if(BUILD_TESTING)
 endif()
 
 include(prx/libSceFreeType/CurveBounds.cmake)
+target_sources(libwebrtc PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/prx/libwebrtc/src/CryptoOptions.cpp)
+
+if(BUILD_TESTING)
+    add_test_executable(guest_webrtc_crypto_options_tests ${CMAKE_CURRENT_SOURCE_DIR}/tests/GuestWebrtcCryptoOptions.cpp)
+    target_include_directories(guest_webrtc_crypto_options_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_link_libraries(guest_webrtc_crypto_options_tests PRIVATE libwebrtc libc)
+    configure_windows_unwind(guest_webrtc_crypto_options_tests)
+    add_test(NAME guest_webrtc_crypto_options COMMAND guest_webrtc_crypto_options_tests)
+    set_tests_properties(guest_webrtc_crypto_options PROPERTIES TIMEOUT 20)
+    if(WIN32)
+        set_tests_properties(guest_webrtc_crypto_options PROPERTIES ENVIRONMENT_MODIFICATION
+            "PATH=path_list_prepend:$<TARGET_FILE_DIR:libwebrtc>")
+    endif()
+endif()
+
 include(prx/libSceBeisobmf/Tests.cmake)
