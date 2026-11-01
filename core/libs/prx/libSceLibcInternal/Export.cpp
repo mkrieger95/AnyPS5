@@ -5,6 +5,7 @@
 #include "prx/libSceLibcInternal/include/RuntimeInternals.hpp"
 #include "prx/libc/include/HeapDiagnostics.hpp"
 #include "prx/libc/include/HostThreadLocal.hpp"
+#include "prx/libc/include/Api.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <sstream>
@@ -1387,9 +1388,8 @@ int APS5_VABI _Getdst_nid_postfix() {
     return 0;
 }
 
-int APS5_VABI _Geterrno_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
-    return 0;
+int* APS5_VABI _Geterrno_nid_postfix() {
+    return __error_nid_postfix();
 }
 
 int APS5_VABI _Getfld_nid_postfix() {
